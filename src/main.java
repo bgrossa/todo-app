@@ -15,7 +15,8 @@ public class main {
 			System.out.println("1: タスク追加");
 			System.out.println("2: 一覧表示");
 			System.out.println("3: タスク削除");
-			System.out.println("4: 終了");
+			System.out.println("4: タスク更新");
+			System.out.println("5: 終了");
 			System.out.println("番号を入力してください: ");
 			
 			int choice = scanner.nextInt();
@@ -50,8 +51,35 @@ public class main {
 				} else {
 					System.out.println("その番号は存在しません");
 				}
-								
+				
 			} else if (choice == 4) {
+				
+				if (tasks.isEmpty()) {
+					System.out.println("タスクがありません");
+				} else {
+					
+					for (int i = 0; i < tasks.size(); i++) {
+						System.out.println(i + " : " + tasks.get(i));
+					}
+					
+					System.out.println("更新する番号を入力してください");
+					int updateIndex = scanner.nextInt();
+					
+					if (updateIndex >= 0 && updateIndex < tasks.size()) {
+						
+						System.out.println("新しいタスク名を入力してください: ");
+						String newTask = scanner.next();
+						
+						tasks.set(updateIndex, newTask);
+						
+						System.out.println("更新しました");
+						
+					} else {
+						System.out.println("その番号は存在しません");
+					}
+			}
+				
+			} else if (choice == 5) {
 				System.out.println("終了します");
 			
 				break;
