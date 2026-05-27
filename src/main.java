@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,6 +13,30 @@ public class main {
 		Scanner scanner = new Scanner(System.in);
 		
 		ArrayList<Task> tasks = new ArrayList<>();
+		
+			try {
+				
+				BufferedReader reader = new BufferedReader(
+					new FileReader("tasks.txt")
+				);
+				
+				String line;
+				
+				while ((line = reader.readLine()) != null) {
+					
+					String[] data = line.split(",");
+					
+					Task task = new Task(data[0]);
+					task.status = data[1];
+					
+					tasks.add(task);
+				}
+				
+				reader.close();
+				
+			} catch (IOException e) {
+				System.out.println("保存ファイルがありません");
+			}
 		
 		while(true) {
 			
@@ -28,24 +57,17 @@ public class main {
 				tasks.add(new Task(task));
 				
 				System.out.println("追加しました");
+				saveTasks(tasks);
 				
 			} else if (choice == 2) {
 				if (tasks.isEmpty()) {
 					System.out.println("タスクがありません");				
 			} else {
-				for (int i = 0; i < tasks.size(); i++) {
-					System.out.println(
-						i + " : "
-						+ tasks.get(i).name
-						+ " [" + tasks.get(i).status + "]"
-					);
-				}
+				showTasks(tasks);
 			}
 				
 			} else if(choice == 3) {
-				for (int i = 0; i < tasks.size(); i++) {
-					System.out.println(i + " : " + tasks.get(i));
-				}
+				showTasks(tasks);
 				
 				System.out.println("削除する番号を入力してください: ");
 				int deleteIndex = scanner.nextInt();
@@ -53,6 +75,7 @@ public class main {
 				if (deleteIndex >= 0 && deleteIndex < tasks.size()) {
 					tasks.remove(deleteIndex);
 					System.out.println("削除しました");
+					saveTasks(tasks);
 				} else {
 					System.out.println("その番号は存在しません");
 				}
@@ -63,13 +86,7 @@ public class main {
 					System.out.println("タスクがありません");
 				} else {
 					
-					for (int i = 0; i < tasks.size(); i++) {
-						System.out.println(
-							i + " : "
-							+ tasks.get(i).name
-							+ " [" + tasks.get(i).status + "]"
-						);
-					}
+					showTasks(tasks);
 					
 					System.out.println("更新する番号を入力してください");
 					int updateIndex = scanner.nextInt();
@@ -82,6 +99,7 @@ public class main {
 						tasks.set(updateIndex, new Task(newTask));
 						
 						System.out.println("更新しました");
+						saveTasks(tasks);
 						
 					} else {
 						System.out.println("その番号は存在しません");
@@ -94,13 +112,7 @@ public class main {
 					System.out.println("タスクがありません");
 				} else {
 					
-					for (int i = 0; i < tasks.size(); i++) {
-						System.out.println(
-							i + " : "
-							+ tasks.get(i).name
-							+ " [" + tasks.get(i).status + "]"
-						);
-					}
+					showTasks(tasks);
 					
 					System.out.print("完了する番号を入力してください: ");
 					int completeIndex = scanner.nextInt();
@@ -110,6 +122,7 @@ public class main {
 						tasks.get(completeIndex).status = "完了";
 						
 						System.out.println("完了にしました");
+						saveTasks(tasks);
 						
 					} else {
 						System.out.println("その番号は存在しません");
@@ -127,5 +140,48 @@ public class main {
 		}
 		
 		scanner.close();
+	}
+	
+	// 1.状態のメソッド化
+	public static void showTasks(ArrayList<Task> tasks) {
+		
+		if (tasks.isEmpty()) {
+			
+			System.out.println("タスクがありません");
+			
+		} else {
+			
+			for (int i = 0; i < tasks.size(); i++) {
+				
+				System.out.println(
+					i + " : "
+					+ tasks.get(i).name
+					+ " [" + tasks.get(i).status + "]"
+				);
+			}
+		}
+	}
+	
+	// 2.保存処理のメソッド化
+	public static void saveTasks(ArrayList<Task> tasks) {
+		
+		try {
+			
+			BufferedWriter writer = new BufferedWriter(
+				new FileWriter("tasks.txt")
+			);
+			
+			for (Task t : tasks) {
+				
+				writer.write(t.name + "," + t.status);
+				writer.newLine();
+			}
+			
+			writer.close();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 	}
 }
