@@ -28,10 +28,14 @@ public class main {
 				System.out.println("追加しました");
 				
 			} else if (choice == 2) {
-				for (String task : tasks) {
-					System.out.println(task);
+				if (tasks.isEmpty()) {
+					System.out.println("タスクがありません");				
+			} else {
+				for (int i = 0; i < tasks.size(); i++) {
+					System.out.println(i + " : " + tasks.get(i));
 				}
-			
+			}
+				
 			} else if(choice == 3) {
 				for (int i = 0; i < tasks.size(); i++) {
 					System.out.println(i + " : " + tasks.get(i));
@@ -40,10 +44,13 @@ public class main {
 				System.out.println("削除する番号を入力してください: ");
 				int deleteIndex = scanner.nextInt();
 				
-				tasks.remove(deleteIndex);
-				
-				System.out.println("削除しました");
-				
+				if (deleteIndex >= 0 && deleteIndex < tasks.size()) {
+					tasks.remove(deleteIndex);
+					System.out.println("削除しました");
+				} else {
+					System.out.println("その番号は存在しません");
+				}
+								
 			} else if (choice == 4) {
 				System.out.println("終了します");
 			
