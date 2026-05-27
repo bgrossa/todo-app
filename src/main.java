@@ -7,7 +7,7 @@ public class main {
 
 		Scanner scanner = new Scanner(System.in);
 		
-		ArrayList<String> tasks = new ArrayList<>();
+		ArrayList<Task> tasks = new ArrayList<>();
 		
 		while(true) {
 			
@@ -16,7 +16,8 @@ public class main {
 			System.out.println("2: 一覧表示");
 			System.out.println("3: タスク削除");
 			System.out.println("4: タスク更新");
-			System.out.println("5: 終了");
+			System.out.println("5: タスク完了");
+			System.out.println("6: 終了");
 			System.out.println("番号を入力してください: ");
 			
 			int choice = scanner.nextInt();
@@ -24,7 +25,7 @@ public class main {
 			if (choice == 1) {
 				System.out.println("タスク名を追加してください: ");
 				String task = scanner.next();
-				tasks.add(task);
+				tasks.add(new Task(task));
 				
 				System.out.println("追加しました");
 				
@@ -33,7 +34,11 @@ public class main {
 					System.out.println("タスクがありません");				
 			} else {
 				for (int i = 0; i < tasks.size(); i++) {
-					System.out.println(i + " : " + tasks.get(i));
+					System.out.println(
+						i + " : "
+						+ tasks.get(i).name
+						+ " [" + tasks.get(i).status + "]"
+					);
 				}
 			}
 				
@@ -59,7 +64,11 @@ public class main {
 				} else {
 					
 					for (int i = 0; i < tasks.size(); i++) {
-						System.out.println(i + " : " + tasks.get(i));
+						System.out.println(
+							i + " : "
+							+ tasks.get(i).name
+							+ " [" + tasks.get(i).status + "]"
+						);
 					}
 					
 					System.out.println("更新する番号を入力してください");
@@ -70,7 +79,7 @@ public class main {
 						System.out.println("新しいタスク名を入力してください: ");
 						String newTask = scanner.next();
 						
-						tasks.set(updateIndex, newTask);
+						tasks.set(updateIndex, new Task(newTask));
 						
 						System.out.println("更新しました");
 						
@@ -78,8 +87,36 @@ public class main {
 						System.out.println("その番号は存在しません");
 					}
 			}
-				
+
 			} else if (choice == 5) {
+				
+				if (tasks.isEmpty()) {
+					System.out.println("タスクがありません");
+				} else {
+					
+					for (int i = 0; i < tasks.size(); i++) {
+						System.out.println(
+							i + " : "
+							+ tasks.get(i).name
+							+ " [" + tasks.get(i).status + "]"
+						);
+					}
+					
+					System.out.print("完了する番号を入力してください: ");
+					int completeIndex = scanner.nextInt();
+					
+					if (completeIndex >= 0 && completeIndex < tasks.size()) {
+						
+						tasks.get(completeIndex).status = "完了";
+						
+						System.out.println("完了にしました");
+						
+					} else {
+						System.out.println("その番号は存在しません");
+					}
+				}
+				
+			} else if (choice == 6) {
 				System.out.println("終了します");
 			
 				break;
